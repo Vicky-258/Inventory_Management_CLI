@@ -8,6 +8,8 @@ A minimal, powerful warehouse inventory management system built in Python using 
 - Low-stock warning alerts
 - Pretty CLI table output with `tabulate`
 - Persistent storage with SQLite
+- CSV Export
+- Search - category, name, threshold of stocks
 
 ### 🚀 Run Locally
 # Clone the repo
