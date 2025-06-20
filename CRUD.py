@@ -2,13 +2,14 @@ from models import Item
 from db import Session
 from tabulate import tabulate
 
-def add_item(name, quantity, price):
+def add_item(name, quantity, price, category="Uncategorized"):
     session = Session()
-    item = Item(name=name, quantity=quantity, price=price)
+    item = Item(name=name, quantity=quantity, price=price, category=category)
     session.add(item)
     session.commit()
     session.close()
-    print(f"✅ Added '{name}' to inventory!")
+    print(f"✅ Added '{name}' to inventory under '{category}' category.")
+
 
 def view_items():
     session = Session()
@@ -16,11 +17,11 @@ def view_items():
     session.close()
 
     if not items:
-        print("📭 Inventory is empty.")
+        print("📦 Inventory is empty.")
         return
 
-    table = [[i.id, i.name, i.quantity, i.price, i.added_on.strftime("%Y-%m-%d %H:%M")] for i in items]
-    print(tabulate(table, headers=["ID", "Name", "Qty", "Price", "Added On"], tablefmt="fancy_grid"))
+    table = [[item.id, item.name, item.quantity, item.price, item.category, item.added_on.strftime('%Y-%m-%d') ] for item in items]
+    print(tabulate(table, headers=["ID", "Name", "Qty", "Price", "Category", "Added On"], tablefmt="grid"))
 
     # 🔔 Low stock warning
     for item in items:
@@ -49,3 +50,22 @@ def delete_item(item_id):
     else:
         print("❌ Item not found.")
     session.close()
+
+def search_items_by_name(keyword):
+    session = Session()
+    items = session.query(Item).filter(Item.name.ilike(f"%{keyword}%")).all()
+    session.close()
+    return items
+
+def search_items_by_category(category):
+    session = Session()
+    items = session.query(Item).filter(Item.category.ilike(f"%{category}%")).all()
+    session.close()
+    return items
+
+def get_low_stock_items(threshold=5):
+    session = Session()
+    items = session.query(Item).filter(Item.quantity < threshold).all()
+    session.close()
+    return items
+
