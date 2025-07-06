@@ -85,4 +85,4 @@ python main.py
 
 ### 👨‍💻 Credits
 
-Built with ❤️ by **Vicky** under the banner Rouge Coders
+Built with ❤️ by **Vicky**
