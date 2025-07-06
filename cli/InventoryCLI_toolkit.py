@@ -49,26 +49,26 @@ class InventoryCLI:
             exit()
 
     def view_items(self):
-        self.item_manager.view_items()
+        self.item_manager.list()
 
     def add_item(self):
         name = prompt("📝 Item Name: ")
         qty = int(prompt("🔢 Quantity: "))
         price = float(prompt("💵 Price: "))
         category = prompt("📁 Category: ")
-        self.item_manager.add_item(name, qty, price, category)
+        self.item_manager.add(name, qty, price, category)
 
     def update_item(self):
         item_id = int(prompt("🔍 Item ID to update: "))
         new_qty = int(prompt("🔢 New Quantity: "))
         new_price = float(prompt("💵 New Price: "))
-        self.item_manager.update_item(item_id, new_qty, new_price)
+        self.item_manager.update(item_id, new_qty, new_price)
 
     def delete_item(self):
         item_id = int(prompt("🗑️ Item ID to delete: "))
         confirm = prompt("⚠️ Are you sure? (y/n): ").lower()
         if confirm == "y":
-            self.item_manager.delete_item(item_id)
+            self.item_manager.delete(item_id)
 
     def search_items(self):
         search_choice = radiolist_dialog(
@@ -151,7 +151,7 @@ class InventoryCLI:
             ).run()
 
             if cat_choice == "1":
-                categories = self.category_manager.list_categories()
+                categories = self.category_manager.list()
                 if categories:
                     for c in categories:
                         self.console.print(f"🗂️ {c.id}: {c.name.title()}")
@@ -160,11 +160,11 @@ class InventoryCLI:
 
             elif cat_choice == "2":
                 name = prompt("📝 Category name: ").strip()
-                self.category_manager.add_category(name)
+                self.category_manager.add(name)
 
             elif cat_choice == "3":
                 name = prompt("🗑️ Category name to delete: ").strip()
-                self.category_manager.delete_category(name)
+                self.category_manager.delete(name)
 
             elif cat_choice == "4":
                 break

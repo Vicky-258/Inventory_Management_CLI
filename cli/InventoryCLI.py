@@ -260,7 +260,7 @@ class InventoryCLI:
                     exit()
 
     def view_items(self):
-        items = self.item_manager.view_items()
+        items = self.item_manager.list()
         input("\n🔄 Press Enter to return to main menu...")
 
     def add_item(self):
@@ -268,21 +268,21 @@ class InventoryCLI:
         qty = int(input("🔢 Quantity: "))
         price = float(input("💵 Price: "))
         category = input("📁 Category: ")
-        self.item_manager.add_item(name, qty, price, category)
+        self.item_manager.add(name, qty, price, category)
         input("\n✅ Item added. Press Enter to return to menu...")
 
     def update_item(self):
         item_id = int(input("🔍 Item ID to update: "))
         new_qty = int(input("🔢 New Quantity: "))
         new_price = float(input("💵 New Price: "))
-        self.item_manager.update_item(item_id, new_qty, new_price)
+        self.item_manager.update(item_id, new_qty, new_price)
         input("\n✅ Item updated. Press Enter to return to menu...")
 
     def delete_item(self):
         item_id = int(input("🗑️ Item ID to delete: "))
         confirm = input("⚠️ Are you sure? (y/n): ").lower()
         if confirm == "y":
-            self.item_manager.delete_item(item_id)
+            self.item_manager.delete(item_id)
         input("\n✅ Done. Press Enter to return to menu...")
 
     def search_items(self):
@@ -372,7 +372,7 @@ class InventoryCLI:
             ).ask()
 
             if cat_choice == "View Categories":
-                categories = self.category_manager.list_categories()
+                categories = self.category_manager.list()
                 if categories:
                     for c in categories:
                         self.console.print(f"🗂️ {c.id}: {c.name.title()}")
@@ -381,11 +381,11 @@ class InventoryCLI:
 
             elif cat_choice == "Add Category":
                 name = input("📝 Category name: ").strip()
-                self.category_manager.add_category(name)
+                self.category_manager.add(name)
 
             elif cat_choice == "Delete Category":
                 name = input("🗑️ Category name to delete: ").strip()
-                self.category_manager.delete_category(name)
+                self.category_manager.delete(name)
 
             elif cat_choice == "Back to Main Menu":
                 break

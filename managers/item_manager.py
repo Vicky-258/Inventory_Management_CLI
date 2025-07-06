@@ -12,7 +12,7 @@ console = Console()
 
 
 class ItemManager:
-    def add_item(self, name, quantity, price, category_name="Uncategorized"):
+    def add(self, name, quantity, price, category_name="Uncategorized"):
         with get_db() as session:
             try:
                 normalized_name = category_name.lower()
@@ -63,7 +63,7 @@ class ItemManager:
                 session.rollback()
                 print(f"❌ Error adding item: {e}")
 
-    def view_items(self):
+    def list(self):
         with get_db() as db:
             items: List[Item] = db.query(Item).all()
 
@@ -80,7 +80,7 @@ class ItemManager:
                 if item.quantity < 5:
                     console.print(f"🚨 LOW STOCK: '[bold red]{item.name}[/bold red]' only has {item.quantity} units left!")
 
-    def update_item(self, item_id: int, new_qty: int, new_price: float):
+    def update(self, item_id: int, new_qty: int, new_price: float):
         with get_db() as db:
             item = db.query(Item).get(item_id)
             if item:
@@ -91,7 +91,7 @@ class ItemManager:
             else:
                 console.print("❌ Item not found.")
 
-    def delete_item(self, item_id: int):
+    def delete(self, item_id: int):
         with get_db() as db:
             item = db.query(Item).get(item_id)
             if item:

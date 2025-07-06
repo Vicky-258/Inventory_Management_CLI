@@ -7,7 +7,7 @@ console = Console()
 
 class CategoryManager:
 
-    def add_category(self, name):
+    def add(self, name):
         with get_db() as session:
             try:
                 exists = session.query(Category).filter_by(name=name.lower()).first()
@@ -22,11 +22,11 @@ class CategoryManager:
                 session.rollback()
                 console.print(f"❌ Error: {e}")
 
-    def list_categories(self):
+    def list(self):
         with get_db() as session:
             return session.query(Category).all()
 
-    def delete_category(self, name):
+    def delete(self, name):
         with get_db() as session:
             try:
                 category = session.query(Category).filter_by(name=name.lower()).first()
