@@ -260,7 +260,7 @@ class InventoryCLI:
                     exit()
 
     def view_items(self):
-        items = self.item_manager.list()
+        self.item_manager.list()
         input("\n🔄 Press Enter to return to main menu...")
 
     def add_item(self):
