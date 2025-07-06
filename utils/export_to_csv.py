@@ -1,11 +1,11 @@
 import csv
-from db import Session
+from db import get_db
 from models import Item
+from sqlalchemy.orm import joinedload
 
 def export_to_csv(filename="inventory_export.csv"):
-    session = Session()
-    items = session.query(Item).all()
-    session.close()
+    with get_db() as db:
+        items = db.query(Item).options(joinedload(Item.category)).all()
 
     if not items:
         print("📦 Inventory is empty. Nothing to export.")
@@ -20,7 +20,8 @@ def export_to_csv(filename="inventory_export.csv"):
                 item.name,
                 item.quantity,
                 item.price,
-                item.category,
+                item.category.name if item.category else "Uncategorized",
                 item.added_on.strftime('%Y-%m-%d %H:%M:%S')
             ])
+
     print(f"✅ Inventory exported to {filename}")
